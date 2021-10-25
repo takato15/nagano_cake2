@@ -1,42 +1,44 @@
 <div class="container mt-5" style="margin-bottom: 190px;">
-<span class="alert"><%= notice %></span>
-<div class="row">
-	<div class="col-md-2 text-center">
-        <%= render 'genres_search', genres: @genres %>
-    </div>
+	<span class="alert"><%= notice %></span>
+		<div class="row">
+			<div class="col-md-2 text-center">
+				<%= render 'genres_search', genres: @genres %>
+		  </div>
 
-	<div class="col-md-5">
-		<div class="text-center mt-2">
-			<%= attachment_image_tag(@product, :image, fallback: "no_image.jpg",size: "270x200" ) %>
-		</div>
-	</div>
-
-	<div class="col-md-5">
-
-		<div class="detail">
-			<h2 class="product-name"><%= @product.name %></h2>
-			<p class="product-caption"><%= @product.caption %></p>
-			<h3 class="product-price">￥<%= (@product.price * 1.1).to_i %><span class="tax">（税込）</span></h3>
-			<% if @product.is_active != true %>
-				<p class="soldout"> 現在品切れ中 </p>
-			<% end %>
-		</div>
-
-		<% if customer_signed_in? %>
-			<div class="row">
-				<% if @product.is_active == true %>
-					<%= form_with(model: @cart_product,method: :post, local: true) do |f| %>
-		      			<%= f.label :quantity, "個数選択" %>
-		      			<%= f.number_field :quantity, min: 1, max: 100, placeholder: '個数選択', class:"quantity-select-form" %>
-		      			<%= f.hidden_field :product_id, :value => @product.id %>
-		      			<%= f.hidden_field :customer_id, :value => current_customer.id %>
-		      			<%= f.submit "カートに入れる", class:"btn btn-sm", style: "background-color: #cbb05e; color: black;" %>
-		    		<% end %>
-		    	<% end %>
+			<div class="col-md-5">
+				<div class="text-center mt-2">
+					<%= attachment_image_tag(@product, :image, fallback: "no_image.jpg",size: "270x200" ) %>
+				</div>
 			</div>
-		<% end %>
 
-	</div>
+			<div class="col-md-5">
 
-	</div>
+				<div class="detail">
+					<h2 class="product-name"><%= @product.name %></h2>
+					<p class="product-caption"><%= @product.caption %></p>
+					<h3 class="product-price">￥<%= (@product.price * 1.1).to_i %><span class="tax">（税込）</span></h3>
+					<!--販売ステータスが売り切れ時に表示-->
+					<% if @product.is_active != true %>
+						<p class="soldout"> 現在品切れ中 </p>
+					<% end %>
+				</div>
+
+				<!--ログイン状態で表示される-->
+				<% if customer_signed_in? %>
+					<div class="row">
+						<% if @product.is_active == true %>
+							<%= form_with(model: @cart_product,method: :post, local: true) do |f| %>
+				      			<%= f.label :quantity, "個数選択" %>
+				      			<%= f.number_field :quantity, min: 1, max: 100, placeholder: '個数選択', class:"quantity-select-form" %>
+				      			<%= f.hidden_field :product_id, :value => @product.id %>
+				      			<%= f.hidden_field :customer_id, :value => current_customer.id %>
+				      			<%= f.submit "カートに入れる", class:"btn btn-sm", style: "background-color: #cbb05e; color: black;" %>
+				    		<% end %>
+				    	<% end %>
+					</div>
+				<% end %>
+
+			</div>
+
+		</div>
 </div>
